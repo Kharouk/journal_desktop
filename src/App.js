@@ -11,6 +11,12 @@ class App extends Component {
       text: null
     };
 
+    /*
+     **
+     ** {TODO: install markdown-to-jsx file}
+     **
+     */
+
     ipcRenderer.on("new-file", (event, fileContent) => {
       this.setState({ text: fileContent });
     });
