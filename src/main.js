@@ -7,7 +7,7 @@ let mainWindow;
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({ width: 1000, height: 800 });
 
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000");
@@ -18,10 +18,12 @@ function createWindow() {
       label: "File",
       submenu: [
         {
-          label: "Open Folder"
+          label: "Open Folder",
+          accelerator: "CmdOrCtrl + O"
         },
         {
-          label: "Open File"
+          label: "Open File",
+          accelerator: "CmdOrCtrl + F"
         }
       ]
     },
@@ -67,6 +69,21 @@ function createWindow() {
           }
         }
       ]
+    },
+    {
+      label: "Developer",
+      submenu: [
+        {
+          label: "Toggle Dev Tools",
+          // accelerators are just keyboard shortcuts
+          accelerator:
+            process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I",
+          click() {
+            // allows us to use dev tools in the project
+            mainWindow.webContents.toggleDevTools();
+          }
+        }
+      ]
     }
   ];
 
@@ -88,7 +105,7 @@ function createWindow() {
     });
 
     // Edit menu
-    template[1].submenu.push(
+    template[2].submenu.push(
       { type: "separator" },
       {
         label: "Speech",
@@ -97,7 +114,7 @@ function createWindow() {
     );
 
     // Window menu
-    template[3].submenu = [
+    template[4].submenu = [
       { role: "close" },
       { role: "minimize" },
       { role: "zoom" },
