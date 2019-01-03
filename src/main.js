@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu } = require("electron");
-
+const { app, BrowserWindow, dialog, Menu } = require("electron");
+const fs = require("fs");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -19,11 +19,14 @@ function createWindow() {
       submenu: [
         {
           label: "Open Folder",
-          accelerator: "CmdOrCtrl + O"
+          accelerator: "CmdOrCtrl + F"
         },
         {
           label: "Open File",
-          accelerator: "CmdOrCtrl + F"
+          accelerator: "CmdOrCtrl + O",
+          click() {
+            openFile();
+          }
         }
       ]
     },
@@ -58,17 +61,6 @@ function createWindow() {
     {
       role: "window",
       submenu: [{ role: "minimize" }, { role: "close" }]
-    },
-    {
-      role: "help",
-      submenu: [
-        {
-          label: "Learn More",
-          click() {
-            require("electron").shell.openExternal("https://electronjs.org");
-          }
-        }
-      ]
     },
     {
       label: "Developer",
@@ -162,3 +154,30 @@ app.on("activate", function() {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// Opens file
+function openFile() {
+  // look for markdown files
+  const files = dialog.showOpenDialog(mainWindow, {
+    properties: ["openFile"],
+    filters: [
+      {
+        name: "Markdown",
+        extensions: ["mdx", "md", "markdown", "txt", "docx"]
+      }
+    ]
+  });
+
+  // if no files are found, quit.
+  if (!files) return;
+
+  // Since showOpenDialog returns an array, we want only the first file.
+  const file = files[0];
+
+  // Import fs to read the file and convert it to string
+  const fileContent = fs.readFileSync(file).toString();
+  // console.log(fileContent);
+
+  // Send file content to a renderer
+  mainWindow.webContents.send("new-file", fileContent);
+}
