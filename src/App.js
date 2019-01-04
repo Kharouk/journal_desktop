@@ -40,7 +40,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">{this.showContent()}</header>
+        <div className="App-div">{this.showContent()}</div>
       </div>
     );
   }
