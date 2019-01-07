@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Markdown from "markdown-to-jsx";
 import AceEditor from "react-ace";
+import styled from "styled-components";
 import brace from "brace";
 import "brace/mode/markdown";
-import "brace/theme/monokai";
+import "brace/theme/dracula";
 import "./App.css";
 // have to use the window.require (related to the build we are using) and the older require method
 const { ipcRenderer } = window.require("electron");
@@ -38,19 +39,26 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-div">{this.showContent()}</div>
-        <AceEditor
-          mode="markdown"
-          theme="monokai"
-          onChange={newContent => {
-            this.setState({ text: newContent });
-          }}
-          name="markdown_editor"
-          value={this.state.text}
-        />
+        <Split>
+          <AceEditor
+            mode="markdown"
+            theme="dracula"
+            onChange={newContent => {
+              this.setState({ text: newContent });
+            }}
+            name="markdown_editor"
+            value={this.state.text}
+          />
+          <div className="App-div">{this.showContent()}</div>
+        </Split>
       </div>
     );
   }
 }
 
 export default App;
+
+const Split = styled.div`
+  display: flex;
+  height: 100vh;
+`;
