@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import Markdown from "markdown-to-jsx";
+import AceEditor from "react-ace";
+import brace from "brace";
+import "brace/mode/markdown";
+import "brace/theme/monokai";
 import "./App.css";
 // have to use the window.require (related to the build we are using) and the older require method
 const { ipcRenderer } = window.require("electron");
@@ -35,6 +39,15 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-div">{this.showContent()}</div>
+        <AceEditor
+          mode="markdown"
+          theme="monokai"
+          onChange={newContent => {
+            this.setState({ text: newContent });
+          }}
+          name="markdown_editor"
+          value={this.state.text}
+        />
       </div>
     );
   }
