@@ -7,7 +7,11 @@ let mainWindow;
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1000, height: 800 });
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 800,
+    titleBarStyle: "hidden"
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000");
