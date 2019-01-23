@@ -23,7 +23,10 @@ function createWindow() {
       submenu: [
         {
           label: "Open Folder",
-          accelerator: "CmdOrCtrl + F"
+          accelerator: "CmdOrCtrl + F",
+          click() {
+            openDir();
+          }
         },
         {
           label: "Open File",
@@ -180,8 +183,19 @@ function openFile() {
 
   // Import fs to read the file and convert it to string
   const fileContent = fs.readFileSync(file).toString();
-  // console.log(fileContent);
 
   // Send file content to a renderer
   mainWindow.webContents.send("new-file", fileContent);
+}
+// Opens Directory
+function openDir() {
+  const directory = dialog.showOpenDialog(mainWindow, {
+    properties: ["openDirectory"]
+  });
+
+  if (!directory) return;
+
+  fs.readdir(directory[0], (err, files) => {
+    console.log("​openDir -> files", files);
+  });
 }
