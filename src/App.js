@@ -6,7 +6,7 @@ import brace from "brace";
 import "brace/mode/markdown";
 import "brace/theme/dracula";
 import "./App.css";
-// have to use the window.require (related to the build we are using) and the older require method
+
 const { ipcRenderer } = window.require("electron");
 
 class App extends Component {
@@ -19,6 +19,10 @@ class App extends Component {
 
     ipcRenderer.on("new-file", (event, fileContent) => {
       this.setState({ text: fileContent });
+    });
+
+    ipcRenderer.on("new-dir", (event, filePaths, dir) => {
+      this.setState({ directory: dir });
     });
   }
 

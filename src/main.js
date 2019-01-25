@@ -190,12 +190,17 @@ function openFile() {
 // Opens Directory
 function openDir() {
   const directory = dialog.showOpenDialog(mainWindow, {
-    properties: ["openDirectory"]
+    properties: ["openDirectory"],
+    extensions: ["mdx", "md", "markdown", "txt", "docx"]
   });
 
   if (!directory) return;
+  const dir = directory[0];
 
-  fs.readdir(directory[0], (err, files) => {
-    console.log("​openDir -> files", files);
+  fs.readdir(dir, (err, files) => {
+    const filteredFiles = files.filter(file => file.includes(".md"));
+    const filePaths = filteredFiles.map(file => `${dir}/${file}`);
+
+    mainWindow.webContents.send("new-dir", filePaths, dir);
   });
 }
